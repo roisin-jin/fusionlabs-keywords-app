@@ -7,14 +7,28 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 
+ * This controller takes keywords list from the main param
+ * Then it takes first 10 keywords from the list and creates 10 parallel threads to call another webservice
+ * If all calls are accepted, add 5 more keywords on the amount until the maximum requests number is reached
+ * If during the process, any thread reports back failure, it should stop creating more threads;
+ * and reduce the amount of calling to the actual successful calls number
+ * 
+ * The maximum requests to be made at the same time is set to 60
+ * Also if the words left to search is less than the requests planed to make, reduce the number of calls as well
+ * 
+ * @author ruchun_jin
+ *
+ */
 public class KeyWordsController {
 	
 	private static final Logger log = LoggerFactory.getLogger(KeyWordsController.class);
 	
 	private static int STARING_REQUESTS = 10;
-	private static int MAX_REQUESTS = 50;
+	private static int MAX_REQUESTS = 60;
 	
-    public static void main( String[] keywords ) {
+    public static void main(String[] keywords) {
     	
     	final List<String> keywordsList = Arrays.asList(keywords);
     	
